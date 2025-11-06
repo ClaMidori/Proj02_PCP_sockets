@@ -9,8 +9,10 @@
 int main(){
     int server_fd, new_socket;
     struct sockaddr_in address;
+    struct sockaddr_in client_addr;
     int opt =1;
     int addrlen = sizeof(address);
+    socklen_t clientlen;
     char buffer[BUFFER_SIZE]={0};
 
     // catch error
