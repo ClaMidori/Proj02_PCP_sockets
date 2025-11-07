@@ -1,28 +1,31 @@
-# Makefile
+#   make all      - Compila tudo (gerador, servidor, cliente)
+#   make servidor - Compila apenas o servidor
+#   make cliente  - Compila apenas o cliente
+#   make gerador  - Compila apenas o gerador de imagem
+#   make clean    - Remove os arquivos compilados
 
 # Compilador C
 CC = gcc
 
 # Flags de compilação:
-# -Wall: Habilita todos os avisos (warning)
-# -g:    Adiciona informações de debug (para usar com gdb)
-# -o:    Especifica o nome do arquivo de saída
-CFLAGS = -Wall -g
+# -O2 = Otimização nível 2 (bom para performance)
+# -Wall = Mostra todos os warnings
+# -Wextra = Mostra warnings extras
+# -std=c11 = Usa o padrão C de 2011
+# -lm = Linka a biblioteca matemática (para 'round')
+CFLAGS = -std=c11 -Wall -Wextra -O2 -lm
 
-# Alvos (binários que queremos criar)
-TARGETS = server client
+# Alvos
+all: gerador servidor cliente
 
-# Regra 'all' (padrão): compila todos os alvos
-all: $(TARGETS)
+servidor: server.c
+	$(CC) $(CFLAGS) -o servidor server.c $(CFLAGS)
 
-# Regra para criar o 'server'
-server: server.c
-	$(CC) $(CFLAGS) -o server server.c
+cliente: client.c
+	$(CC) $(CFLAGS) -o cliente client.c $(CFLAGS)
 
-# Regra para criar o 'client'
-client: client.c
-	$(CC) $(CFLAGS) -o client client.c
+gerador: geraImagem.c
+	$(CC) $(CFLAGS) -o gera geraImagem.c $(CFLAGS)
 
-# Regra 'clean': remove os arquivos compilados
 clean:
-	rm -f $(TARGETS) *.o
+	rm -f servidor cliente gera *.o
